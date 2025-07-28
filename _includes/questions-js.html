@@ -1,0 +1,26 @@
+<script>
+
+// set div for content
+const questions_div = document.getElementById("questionsdiv");
+
+// set up var
+var questions = "";
+
+for (let i = 0; i < 14; i++) {
+    // set random numbers 
+    let firstNum, operator, secondNum;
+    const ops = ['+', '-', '*', '/'];
+    firstNum = Math.floor(Math.random() * 199) - 99; 
+    secondNum = Math.floor(Math.random() * 199) - 99;
+    operator = ops[Math.floor(Math.random() * ops.length)];
+    // Avoid division by zero
+    if (operator === '/' && secondNum === 0) secondNum = 1;
+    // Escape operator for URL (encodeURIComponent)
+    const opForUrl = encodeURIComponent(operator);
+
+    questions += `<a class="btn btn-lg btn-outline-primary m-3" href="{{ '/answers.html' | relative_url }}?q=${firstNum}${opForUrl}${secondNum}">${firstNum} ${operator} ${secondNum}</a>`;
+}
+
+questions_div.innerHTML = questions;
+
+</script>

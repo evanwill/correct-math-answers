@@ -1,0 +1,44 @@
+<script>
+
+// set div for content
+const answer_div = document.getElementById("answerdiv");
+
+// check url search string
+const params = new URLSearchParams(window.location.search);
+let query = "";
+for (const [key, value] of params) {
+  query = value;
+  break;
+}
+
+// if url search string contains pattern representing a simple addition or subtraction or multiplication or division problem (like "2+4" or "2-4" or "2*4" or "2x4" or "2/4") then set three variables, 1) first number, 2) mathematical operator, 3) second number.
+// if no search string or search string is invalid set the same three variables at random
+
+// Regex to match simple math expressions: e.g., 2+4, 3-1, 5*6, 7x8, 9/3
+const mathPattern = /^(-?\d+)\s*([\+\-\*x\/])\s*(-?\d+)$/i;
+
+let firstNum, operator, secondNum;
+
+if (query && mathPattern.test(query)) {
+  const match = query.match(mathPattern);
+  firstNum = parseInt(match[1], 10);
+  operator = match[2] === 'x' ? '*' : match[2];
+  secondNum = parseInt(match[3], 10);
+} else {
+  // If invalid or missing, generate random problem
+  const ops = ['+', '-', '*', '/'];
+  firstNum = Math.floor(Math.random() * 199) - 99; // -99 to 99
+  secondNum = Math.floor(Math.random() * 199) - 99;
+  operator = ops[Math.floor(Math.random() * ops.length)];
+  // Avoid division by zero
+  if (operator === '/' && secondNum === 0) secondNum = 1;
+}
+
+// Set a fourth variable answer by selecting a random number between -99 and 99
+const answer = Math.floor(Math.random() * 199) - 99;
+
+// Example: you can now use firstNum, operator, secondNum, and answer
+answer_div.innerHTML = `<div class="display-1 p-5">${firstNum} ${operator} ${secondNum} = ${answer}</div>`;
+
+
+</script>
